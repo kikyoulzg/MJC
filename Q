@@ -1,0 +1,489 @@
+/*
+	如果输入的整数值为正，则判断该值的奇偶性并显示
+*/
+
+#include <stdio.h>
+
+int main(void)
+{
+	int no;
+
+	printf("请输入一个整数：");
+	scanf("%d", &no);
+
+	if (no > 0)
+		if (no % 2 == 0)
+			puts("该整数为偶数。");
+		else
+			puts("该整数为奇数。");
+	else
+		puts("您输入的不是正数。\a\n");
+
+	return 0;
+}
+运行结果：./shiyan              
+请输入一个整数：-8
+该数除以3的余数是2。
+
+
+
+/*
+	如果输入的整数值为正，则判断该值的奇偶性并显示
+*/
+
+#include <stdio.h>
+
+int main(void)
+{
+	int no;
+
+	printf("请输入一个整数：");
+	scanf("%d", &no);
+
+	if (no > 0){
+		if (no % 2 == 0)
+			puts("该整数为偶数。");
+		else
+			puts("该整数为奇数。");
+    }	else{
+		puts("您输入的不是正数。\a\n");
+    }
+	return 0;
+}
+运行结果：./shiyan              
+请输入一个整数：-8
+您输入的不是正数。
+
+
+
+
+这是gcc编译器的信息：
+apt show gcc
+Package: gcc
+Version: 4:6.3.0-2
+Priority: optional
+Section: devel
+Source: gcc-defaults (1.166)
+Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Installed-Size: 44.0 kB
+Provides: c-compiler
+Depends: cpp (>= 4:6.3.0-2), gcc-6 (>= 6.3.0-9~)
+Recommends: libc6-dev | libc-dev
+Suggests: gcc-multilib, make, manpages-dev, autoconf, automake, libtool, flex, bison, gdb, gcc-doc
+Conflicts: gcc-doc (<< 1:2.95.3)
+Tag: devel::compiler, devel::lang:c, interface::commandline,
+ role::metapackage, role::program, suite::gnu,
+ works-with::software:source
+Build-Essential: yes
+Download-Size: 5,194 B
+APT-Manual-Installed: yes
+APT-Sources: http://packages.deepin.com/deepin panda/main amd64 Packages
+Description: GNU C compiler
+ This is the GNU C compiler, a fairly portable optimizing compiler for C.
+ .
+ This is a dependency package providing the default GNU C compiler.
+
+
+难道是标准的问题？？
+
+
+4-1为啥编译器会警告？？
+[~/【源代码】明解C语言（第3版）：入门篇/MJC]
+kikyoulzg-> gcc -o shiyan shiyan.c
+shiyan.c: In function ‘main’:
+shiyan.c:11:3: warning: implicit declaration of function ‘printf’ [-Wimplicit-function-declaration]
+   printf("请输入一个整数：");
+   ^~~~~~
+shiyan.c:11:3: warning: incompatible implicit declaration of built-in function ‘printf’
+shiyan.c:11:3: note: include ‘<stdio.h>’ or provide a declaration of ‘printf’
+shiyan.c:12:3: warning: implicit declaration of function ‘scanf’ [-Wimplicit-function-declaration]
+   scanf("%d", &no);
+   ^~~~~
+shiyan.c:12:3: warning: incompatible implicit declaration of built-in function ‘scanf’
+shiyan.c:12:3: note: include ‘<stdio.h>’ or provide a declaration of ‘scanf’
+shiyan.c:15:4: warning: implicit declaration of function ‘puts’ [-Wimplicit-function-declaration]
+    puts("这个整数是奇数。");
+    ^~~~
+握草，难道if语句没有if！（条件）这种操作的咩？？
+VC默认的gb18030编码
+
+
+
+#include <stdio.h>
+int main (){
+    int n,i;
+    printf("please import a no:");
+    scanf("%d",&n);
+    for(i=1;i<=n;i++){
+        printf("%d的二次方是",i);
+        printf("%d",i*i);
+        putchar('\n');
+    }
+    putchar('\n');
+    return 0;
+}
+可以写成
+#include <stdio.h>
+int main (){
+    int n,i;
+    printf("please import a no:");
+    scanf("%d",&n);
+    
+    for(i=1;i<=n;i++){
+        printf("%d的二次方是%d",i,i*i);
+      
+        putchar('\n');
+    }
+    putchar('\n');
+    return 0;
+}
+
+
+
+
+
+#include <stdio.h>
+
+int main(void)
+{
+	int i;
+	int x[7];					/* int[7] 数组 */
+
+	for (i = 0; i < 7; i++) {	/* 输入元素的值 */
+		printf("x[%d] : ", i);
+		scanf("%d", &x[i]);
+	}
+
+	for (i = 0; i < 3; i++) {	/* 对数组元素进行倒序排列 */
+		x[i]=x[i]+x[6-i];
+        x[6-i]=x[i]-x[6-i];
+        x[i]=x[i]-x[6-i];
+	}
+
+	puts("倒序排列了。");
+	for (i = 0; i < 7; i++)		/* 显示元素的值 */
+		printf("x[%d] = %d\n", i, x[i]);
+
+	return 0;
+}
+
+
+这种写法似乎比下面的帅耶
+int main(void)
+{
+	int i;
+	int x[7];					/* int[7] 数组 */
+
+	for (i = 0; i < 7; i++) {	/* 输入元素的值 */
+		printf("x[%d] : ", i);
+		scanf("%d", &x[i]);
+	}
+
+	for (i = 0; i < 3; i++) {	/* 对数组元素进行倒序排列 */
+		int temp = x[i];
+		x[i]     = x[6 - i];
+		x[6 - i] = temp;
+	}
+
+	puts("倒序排列了。");
+	for (i = 0; i < 7; i++)		/* 显示元素的值 */
+		printf("x[%d] = %d\n", i, x[i]);
+
+	return 0;
+}
+
+
+
+static静态存储期
+*diff = (n1 > n2) ? n1 - n2 : n2 - n1;这种写法好
+
+
+
+
+char *p[]   = {"PAUL", "X", "MAC"};
+这里的*p[]是啥。。。。？指针？数组？
+
+const 修饰符？
+撸了一遍mjc，结构控制，流程控制，数组，函数，字符串，数据类型，指针，结构体，文件处理。。。。有点困。。。。
+
+
+妈耶，这几天晚上失眠，早上困
+标识符
+
+
+计算行列式的值，要bool类型的可以直接用stdbool.h~\(≧▽≦)/~啦啦啦（c99）
+#include <malloc.h>
+#include <stdio.h>
+#include <stdlib.h>             /*头文件*/
+#include <stdbool.h>
+                                  
+int * c,                       
+      n = 0,                  
+      a,                         
+      sum = 0;             
+int aq(int a)           /*aq计算阶乘*/              
+{
+    int s = 1;
+    for(int i = 1; i <= a; i ++)
+          s *= i;
+    return s;
+}
+void swap(int * a, int * b)         /*swap利用地址传递交换两个数的值*/
+{
+    int m =* a;
+    * a = * b;
+    *b = m;
+}
+bool sa(int * l)            /*sa计算在行列式计算过程中每一项前边的符号是正还是负*/
+{
+    int n = 0;
+    for(int i = 0; i < a-1; i ++)
+         for(int j = i+1; j < a; j++)
+               if(l[i]>l[j])n++;
+    if(n % 2 == 0) return false;
+    return true;
+}
+void perm(int * l,int k,int m)          /*perm整个程序里边的核心函数，找出在不同行不同列的所有组合*/
+{
+    int i, s = 1;
+    if(k > m)
+    {
+        n++;            //递归次数//
+        for(int j = 0; j < a; j ++)
+              s *= c[ l[ j ] + a * j ];
+        if( sa( l ) ) s*=-1;
+      
+        printf("%5d      完成度：%2.2f%%\n", sum+=s , n/( aq( a ) * 0.1 ) * 10 );
+    }
+    else            //全排列问题//
+    {
+        for(i = k; i <= m; i++)
+        {
+            swap(l + k, l + i);
+            perm(l, k + 1, m);
+            swap(l + k, l + i);
+        }
+    }
+}
+/*---------------------------------------------------------------*/
+void main()
+{
+    int * b,
+    i, 
+    f, 
+    e;
+    system("color 3e");
+u: system("cls");
+    printf("请输入行列式的阶数：\n");
+    scanf("%d", &a);//获取行列式的阶数
+    b = ( int * ) malloc ( sizeof ( int ) * a );            /*malloc*/
+    c = ( int * ) malloc ( sizeof ( int ) * a * a );
+    for( i = 0; i < a; i++)
+         * ( b + i ) = i;
+    for( i = 0; i < a * a; i++)
+    {
+        if( i % a == 0 )
+            printf("请依次输入行列式中第%d行的值（以空格分隔）：\n",i / a + 1 );
+        scanf("%d", c + i );
+    }
+    printf("\n\n");
+    perm( b, 0, a - 1 );            /*计算行列式的值*/
+    printf("\n行列式展开式共有%d项\n", aq( a ) );
+    if ( a % 2 != 0 ) f = a + 1;
+        else f = a;
+    for( i = 0; i < a * a; i ++ )
+    {       
+        if ( i / a + 1 == f / 2 && i % a == 0) 
+            printf("D = ");//输出“D = ”
+        else if ( i % a == 0) 
+                    printf("    ");
+        if ( i % a == 0) 
+            printf("┃");
+        if ( ( i + 1 ) % a == 0) 
+            printf("%2d", * ( c + i ) );
+        else printf("%2d ", * ( c + i ) );
+        if ( ( i + 1 ) % a == 0 ) 
+            printf("┃");
+        if ( ( i + 1 ) / a == f / 2 && ( i + 1 ) % a == 0) 
+            printf(" = %d\n",sum);
+        else if ( ( i + 1 ) % a == 0 ) 
+                    printf("\n");
+    }
+    printf("\n\n");
+    printf("是否继续？（ 1 / 0 ）\n");
+    scanf("%d", &e);
+    n = 0;
+    if( e ==1 ) goto u;
+    else if ( e == 0 ) exit( 0 );
+}
+
+
+看看malloc
+
+分层的思想
+并发性 多线程   同步 并发 锁
+mmu内存管理单元
+thread线程
+pthread库
+synchronization同步
+lock锁
+可重入
+是否存在可移植的阻止乱序的方法
+看来 .intel_syntax 指令可以让我在gas汇编使用intel语法
+
+
+
+
+
+
+预编译器cpp：.c>.i
+编译器ccl：.c>.s 
+汇编器as：.s>.o
+编译器干了啥：
+前端：
+词法扫描器lex
+语法分析器yacc
+语义分析
+后端：
+源代码优化
+目标代码优化
+
+连接器ld：地址空间分配，符号决议，重定位
+binutils:objdump
+readelf
+objdump -s -d:打印段内容，反汇编
+_attribute_((Section("name")))name是函数或变量的名，自定义段
+大端法直观小端法直感
+马屁股和航天飞机
+ELF文件标准
+马丹,突然觉得日常开着半角对编程是有好处的...23333    ctrl+.
+file命令查看文件格式
+
+
+
+objdump -s -d:打印段内容，反汇编
+systemdata_sqlite3.o：     文件格式 elf64-x86-64
+
+Contents of section .text:
+ 00000 554889e5 4883ec20 48897de8 488b45e8  UH..H.. H.}.H.E.
+ 00010 ba070000 00488d35 00000000 4889c7e8  .....H.5....H...
+ 00020 00000000 85c07505 488345e8 07488b45  ......u.H.E..H.E
+ 00030 e84889c7 e8e58900 008945f8 c745fc00  .H........E..E..
+ 00040 000000eb 6a8b45fc 4898488d 14c50000  ....j.E.H.H.....
+ 00050 0000488d 05000000 00488b0c 028b55f8  ..H......H....U.
+ 00060 488b45e8 4889ce48 89c7e800 00000085  H.E.H..H........
+ 最左边一列是偏移量中间4列是十六进制内容最后一列是段的ascii码形式
+
+
+
+系统假死后的
+安全处理
+
+SysRq 键组合可以由 Linux 内核解释，使用户能够在不受系统状态的影响（除 kernel panic 或 kernel 假死）下达各种底层命令。它常用来从 X-server 假死的状态下恢复或是在不损坏文件系统的前提下重新启动系统。
+安全重启
+
+在遇到系统假死后且其他方法都不奏效的时候，此方法在想要不损坏硬盘设备或丢失数据的前提下尽量完好重新启动时非常有用。 在系统假死时，可以简单地按下:
+Alt+SysRq+R+S+E+I+U+B
+记住斜体部分的键要在按接下来的键序列时一直按住，且接下来的几个键都要稍按按住一会儿再接着按下一个键，这样它们代表的动作都会正确执行（比如，按住 R 键 1-2 秒再接着按后面的 S 键）。如果该键序列开始并不奏效，那么就延长序列中每个按键的间隔时间再试一次。
+如果有谁需要一个记住该组合键的好方法，只需记住“Raising Skinny Elephants Is Utterly Boring（举起瘦得皮包骨头似的大象真是无聊至极）”
+安全关机
+
+完成这个目的使用的键序列与重新启动除最后一个键外没有区别，按键如下：
+Alt+SysRq+R+S+E+I+U+O
+记住与之前相同，斜体部分的键要在按接下来的键序列时一直按住，且接下来的几个键都要稍按按住一会儿再接着按下一个键，这样它们代表的动作都会正确执行。
+下面是对上述按键行为的详细描述：
+Raw (从 X 取回对键盘的控制)
+tErminate (结束 Nice 值为 -15 的程序，使其正常终止)
+kIll (kill -9 unterminated programs 结束 Nice 值为 -9 的未终止程序)
+Sync (将数据刷新到磁盘)
+Unmount (全部重新挂载为只读)
+reBoot（重新启动，相当于冷重启）
+Off （通过 ACPI 或在旧系统中通过 APM 关闭系统。如“B”键一样，这个键相当于冷关机
+
+
+段里面有对绝对地址的应用就需要重定位
+字符串表,段表字符串表
+
+elf链接视图和执行视图
+
+gsettings set com.deepin.dde.keybinding.mediakey capslock "[]"
+gsettings set com.deepin.dde.keyboard layout-options "['ctrl:swapcaps']"
+交换capslock和ctrl建后大小写切换提示就没有了
+这个注销后有时会失效...怎么恢复原样来着
+
+
+有一个gnu的包叫binutilfs,很强
+记录一个重要文件:/usr/include/elf.h
+
+
+mdzz<<程序员的自我修养>>里p91 里extern "C" double _ZN6myname3varE;里的_去掉才对,至少2018年也就是目前linux下gcc对c语言的符号修饰是不用加_的
+真正了不起的程序员对自己的程序的每一个字节都了如指掌
+
+更改标准输入流：在<后面给出输入源
+更改标准输出流：在>后面给出输出源
+
+static int i=1;
+int main(){
+  int i=2;
+  printf("%d",i);
+  return 0;
+}
+输出结果是2
+可见函数内的i优先度高于全局变量
+
+等待x毫秒
+int sleep(unsigned long x)
+{
+clock_t c1 =clock(),c2;
+do{
+if((c2=clock())==(clock_t)-1)
+return0;
+}
+while (1000.0 * (c2-c1)/clocks_pre_sec <x);
+return 1;
+}
+
+要得到0~a的随机数x
+srand(time(null))
+x=rand()%(a+1)
+要得到a~b的随机数y
+y=a+rand()%(b-a+1)
+
+#include <stdio.h>
+
+int plus(int y)
+{
+    int x=1;
+    int k=x+y;
+    printf("%d\n",k );
+}
+    
+
+int main()
+{
+    int x;
+    x=100;
+    plus(3);
+    return 0;
+}
+
+可见c语言不是所谓的 dynamic scoping ,dynamic scoping 就是说，如果你的函数定义里面有“自由变量”，那么这个自由变量的值，会随着函数的“调用位置”的不同而发生变化。
+
+ for (i=0;i<4;i++){
+        if (!isdigit(x[i]))
+            putchar ('2');
+    for(j=0;j<i;j++)
+        if(x[i]==x[j])
+            putchar('3');
+    }
+
+和
+
+ for (i=0;i<4;i++)
+        if (!isdigit(x[i]))
+            putchar ('2');
+    for(j=0;j<i;j++)
+        if(x[i]==x[j])
+            putchar('3');
+    
+不一样

@@ -1,0 +1,71 @@
+读书笔记
+* ps
+** 
+分层的思想
+并发性 多线程   同步 并发 锁
+mmu内存管理单元
+thread线程
+pthread库
+synchronization同步
+lock锁
+可重入
+是否存在可移植的阻止乱序的方法
+看来 .intel_syntax 指令可以让我在gas汇编使用intel语法
+** 
+有一个gnu的包叫binutilfs,很强
+mdzz<<程序员的自我修养>>里p91 里extern "C" double _ZN6myname3varE;里的_去掉才对,至少2018年也就是目前linux下gcc对c语言的符号修饰是不用加_的 
+** 
+ABI(二进制) API(源代码)
+
+          
+
+
+
+
+** 
+<<LSB手册>>,dynsym动态符号表,dynstr动态符号字符串表 
+* 
+gcc hello.c -o hello  --> 预编译+编译(/usr/lib/gcc/i486-linux-gnu/4.1/ccl hello.c > hello.s)
+                      
+                      --> 汇编(as hello.s -o hello)
+                      
+		      --> 链接(ld)
+
+预编译-->编译-->汇编(生成目标文件)-->链接(地址空间分配，符号决议，重定位)
+        |     
+        前端(词法扫描器lex,语法分析器yacc,语义分析)
+        |
+        后端(源代码优化,目标代码优化)
+
+scanner(lex)(token)词法分析/扫描
+parser(yacc)(syntax)语法分析
+semantic analyzer 语义分析
+
+* 
+elf文件类型:可重定位relocatable,可执行文件executable,共享目标文件shared object,核心转储coredump
+file查看文件格式,objdump,size查看elf文件的代码段/数据段/BSS段,objcopy(自定义段)
+ELF文件结构:elf文件头(/usr/include/elf.h,readelf -h 查看elf文件头,readelf -S 查看段表),重定位表,字符串表,符号表(readelf -s)
+链接的接口"符号":特殊符号,符号修饰,extern "c" ,强符号弱符号
+objdump -s -d:打印段内容，反汇编
+strip去掉调试信息
+
+* 
+静态链接:空间与地址分配(虚拟地址 空间的分配),符号解析与重定位☆,common块☆,c++相关问题,静态库链接,连接过程控制☆,BFD库
+ld a.o b.o -e main -o ab(-e指定程序入口),objdump -d a.o反汇编,objdump -r a.o重定位表,readelf -s a.o 符号表,
+gcc -ffunction -sections,gcc -fdata -sections(保持到独立的段)
+/usr/lib/libc.a
+ar -t libc.a(库里包含什么目标文件) ar -x (解压)  gcc --verbose (中间步骤)
+链接控制脚本:ld --verbose 查看脚本 /usr/lib/ldscripts,ld -T 自己控制脚本
+BFD库(软件包binutils-dev)
+* 
+DSO动态共享对象
+c语言库的运行库glibc的动态链接形式版本是/lib/libc.so
+readwlf -L lib.so查看lib.so的装载属性
+readelf -d foo.so | grep TEXTREL 区分一个DSO是否为PIC
+readelf -d lib.so 段内容
+ldd program1 查看一个程序主模块依赖于哪些共享库
+readelf -sD lib.so查看动态符号表以及哈希表
+readelf -r lib.so -S lib.so 查看动态链接文件的重定位表
+重定位的方法☆
+gcc -shared readelf -r lib.so不使用PIC的方法编译
+PIC(地址无关变量)
